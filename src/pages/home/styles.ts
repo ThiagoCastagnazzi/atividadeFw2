@@ -27,6 +27,7 @@ const ProductList = styled.ul`
   a {
     display: flex;
     flex-direction: column;
+    align-items: center;
     background: #fff;
     border-radius: 4px;
     padding: 20px;
@@ -35,7 +36,8 @@ const ProductList = styled.ul`
 
     img {
       align-self: center;
-      max-width: 250px;
+      width: 250px;
+      height: 250px;
     }
 
     > strong {
@@ -43,6 +45,7 @@ const ProductList = styled.ul`
       line-height: 20px;
       color: #333;
       margin-top: 5px;
+      height: 50px;
     }
 
     > span {
@@ -78,4 +81,24 @@ const FavoriteButton = styled.button`
   }
 `;
 
-export { Container, ProductList, FavoriteButton };
+const AddCartButton = styled.button`
+  width: 220px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: #0078FF;
+  color: #fff;
+  outline: none;
+  border: none;
+  transition: ease-in-out 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #024289;
+    transition: ease-in-out 0.3s;
+  }
+`;
+
+export { Container, ProductList, FavoriteButton, AddCartButton };

@@ -16,6 +16,26 @@ const Logo = styled.div`
   }
 `;
 
+const CartWrapper = styled.div`
+  position: relative;
+
+  span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    font-size: 10px;
+  }
+`;
+
 const UserInfo = styled.div`
   position: relative;
   cursor: pointer;
@@ -43,12 +63,12 @@ const AccessButton = styled.div`
 
 const DropdownMenu = styled.div`
   position: absolute;
-  top: calc(100% + 10px); /* Alterado */
+  top: calc(100% + 10px);
   right: 0;
-  background-color: #fff; /* Alterado */
-  color: #333; /* Alterado */
+  background-color: #fff;
+  color: #333;
   border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adicionado */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   padding: 8px 0;
   z-index: 1;
 
@@ -84,4 +104,4 @@ const DropdownMenu = styled.div`
   }
 `;
 
-export { HeaderContainer, Logo, UserInfo, AccessButton, DropdownMenu };
+export { HeaderContainer, Logo, UserInfo, AccessButton, DropdownMenu, CartWrapper };

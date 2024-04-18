@@ -4,12 +4,15 @@ import { AuthProvider } from "./context/authContext";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import { CartProvider } from "./context/cartContext";
 
 function App() {
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
-      <ToastContainer />
+      <CartProvider>
+        <RouterProvider router={router} />
+        <ToastContainer position="bottom-left" />
+      </CartProvider>
     </AuthProvider>
   );
 }

@@ -8,10 +8,11 @@ import {
   getDocs,
   deleteDoc,
 } from "firebase/firestore";
-import { Container, FavoriteButton, ProductList } from "./styles";
+import { AddCartButton, Container, FavoriteButton, ProductList } from "./styles";
 import Header from "../../components/Header";
 import { FaHeart } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useCart } from "../../context/cartContext";
 
 interface Product {
   id: number;
@@ -25,6 +26,8 @@ interface ProductFormatted extends Product {
 }
 
 const Home = (): JSX.Element => {
+  const { addProduct } = useCart();
+
   const db = getFirestore();
   const [products, setProducts] = useState<ProductFormatted[]>([]);
   const [favorites, setFavorites] = useState<number[]>([]);
@@ -98,6 +101,15 @@ const Home = (): JSX.Element => {
                   color={checkIfFavoriteExists(product.id) ? "red" : "white"}
                 />
               </FavoriteButton>
+
+                <AddCartButton
+                  onClick={(event) => {
+                    event.preventDefault()
+                    addProduct(product.id)
+                  }}
+                >
+                  Adicionar ao Carrinho
+                </AddCartButton>
             </a>
           ))}
         </ProductList>
