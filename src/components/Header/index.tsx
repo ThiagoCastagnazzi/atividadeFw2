@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 import { signOut } from "firebase/auth";
@@ -14,8 +14,11 @@ import {
 import { toast } from "react-toastify";
 import { TiShoppingCart } from "react-icons/ti";
 import { useCart } from "../../context/cartContext";
+import ShoppingCartModal from "../ShoppingCartModal";
 
 const Header = (): JSX.Element => {
+  const [isShoppingModalOpen, setIsShoppingModalOpen] = useState(false);
+
   const { cart } = useCart();
 
   const { currentUser } = useAuth();
@@ -36,51 +39,59 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <HeaderContainer>
-      <Logo>
-        <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
+    <>
+      <HeaderContainer>
+        <Logo>
+          <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
             TADS
-        </Link>
-      </Logo>
+          </Link>
+        </Logo>
 
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "12px"
-      }}>
-        <CartWrapper>
-          <TiShoppingCart size={36} />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
+          <CartWrapper
+            onClick={() => setIsShoppingModalOpen(!isShoppingModalOpen)}
+          >
+            <TiShoppingCart size={36} />
 
-          <span>{cart.length}</span>
-        </CartWrapper>
-        
-        {currentUser ? (
-          <UserInfo>
-            <div onClick={toggleDropdown}>
-              <p>{currentUser.email}</p>
-              {dropdownOpen && (
-                <DropdownMenu>
-                  <ul>
-                    <li>
-                      <Link to="/favorites">Favoritos</Link>
-                    </li>
-                    <li>
-                      <button onClick={handleLogout}>Logout</button>
-                    </li>
-                  </ul>
-                </DropdownMenu>
-              )}
-            </div>
-          </UserInfo>
-        ) : (
-          <AccessButton>
-            <Link to="/login">
-              <button>Acessar</button>
-            </Link>
-          </AccessButton>
-        )}
-      </div>
-    </HeaderContainer>
+            <span>{cart.length}</span>
+          </CartWrapper>
+
+          {currentUser ? (
+            <UserInfo>
+              <div onClick={toggleDropdown}>
+                <p>{currentUser.email}</p>
+                {dropdownOpen && (
+                  <DropdownMenu>
+                    <ul>
+                      <li>
+                        <Link to="/favorites">Favoritos</Link>
+                      </li>
+                      <li>
+                        <button onClick={handleLogout}>Logout</button>
+                      </li>
+                    </ul>
+                  </DropdownMenu>
+                )}
+              </div>
+            </UserInfo>
+          ) : (
+            <AccessButton>
+              <Link to="/login">
+                <button>Acessar</button>
+              </Link>
+            </AccessButton>
+          )}
+        </div>
+
+        {isShoppingModalOpen && <ShoppingCartModal />}
+      </HeaderContainer>
+    </>
   );
 };
 

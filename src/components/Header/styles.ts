@@ -7,6 +7,7 @@ const HeaderContainer = styled.div`
   padding: 20px 115px;
   background-color: #333;
   color: #fff;
+  position: relative;
 `;
 
 const Logo = styled.div`
@@ -18,6 +19,7 @@ const Logo = styled.div`
 
 const CartWrapper = styled.div`
   position: relative;
+  cursor: pointer;
 
   span {
     position: absolute;
@@ -104,4 +106,11 @@ const DropdownMenu = styled.div`
   }
 `;
 
-export { HeaderContainer, Logo, UserInfo, AccessButton, DropdownMenu, CartWrapper };
+export {
+  HeaderContainer,
+  Logo,
+  UserInfo,
+  AccessButton,
+  DropdownMenu,
+  CartWrapper,
+};

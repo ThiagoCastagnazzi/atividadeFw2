@@ -1,5 +1,5 @@
-import { createContext, ReactNode,  useContext,  useState } from 'react';
-import { toast } from 'react-toastify';
+import { createContext, ReactNode, useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 interface CartProviderProps {
   children: ReactNode;
@@ -9,6 +9,7 @@ interface CartContextData {
   cart: any[];
   addProduct: (productId: number) => Promise<void>;
   removeProduct: (productId: number) => void;
+  descreaseAmount: (productId: number) => void;
   clearCart: () => void;
 }
 
@@ -16,7 +17,7 @@ const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const [cart, setCart] = useState<any[]>(() => {
-    const storagedCart = localStorage.getItem('@tads:cart');
+    const storagedCart = localStorage.getItem("@tads:cart");
 
     if (storagedCart) {
       return JSON.parse(storagedCart);
@@ -28,61 +29,94 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const addProduct = async (productId: number) => {
     try {
       const updatedCart = [...cart];
-      const productExists = updatedCart.find(product => product.id === productId);
+      const productExists = updatedCart.find(
+        (product) => product.id === productId
+      );
 
       const currentAmount = productExists ? productExists.amount : 0;
       const amount = currentAmount + 1;
 
-
       if (productExists) {
         productExists.amount = amount;
       } else {
-        const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
+        const response = await fetch(
+          `https://fakestoreapi.com/products/${productId}`
+        );
         const product = await response.json();
 
         const newProduct = {
           ...product,
-          amount: 1
-        }
+          amount: 1,
+        };
 
         updatedCart.push(newProduct);
       }
 
       setCart(updatedCart);
-      localStorage.setItem('@tads:cart', JSON.stringify(updatedCart));
+      localStorage.setItem("@tads:cart", JSON.stringify(updatedCart));
 
-      toast.success('Produto adicionado ao carrinho')
+      toast.success("Produto adicionado ao carrinho");
     } catch {
-      toast.error('Erro na adição do produto');
+      toast.error("Erro na adição do produto");
+    }
+  };
+
+  const descreaseAmount = (productId: number) => {
+    try {
+      const updatedCart = [...cart];
+      const productExists = updatedCart.find(
+        (product) => product.id === productId
+      );
+
+      if (productExists) {
+        if (productExists.amount <= 1) {
+          removeProduct(productId);
+          return;
+        }
+
+        productExists.amount -= 1;
+        setCart(updatedCart);
+        localStorage.setItem("@tads:cart", JSON.stringify(updatedCart));
+
+        toast.success("Quantidade do produto atualizada");
+      } else {
+        throw Error();
+      }
+    } catch {
+      toast.error("Erro na remoção do produto");
     }
   };
 
   const removeProduct = (productId: number) => {
     try {
       const updatedCart = [...cart];
-      const productIndex = updatedCart.findIndex(product => product.id === productId);
+      const productIndex = updatedCart.findIndex(
+        (product) => product.id === productId
+      );
 
       if (productIndex >= 0) {
         updatedCart.splice(productIndex, 1);
         setCart(updatedCart);
-        localStorage.setItem('@tads:cart', JSON.stringify(updatedCart));
+        localStorage.setItem("@tads:cart", JSON.stringify(updatedCart));
+
+        toast.success("Produto removido do carrinho");
       } else {
         throw Error();
       }
     } catch {
-      toast.error('Erro na remoção do produto');
+      toast.error("Erro na remoção do produto");
     }
   };
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem('@tads:cart');
-    toast.success('Pedido Realizado com Sucesso!');
-  }
+    localStorage.removeItem("@tads:cart");
+    toast.success("Pedido Realizado com Sucesso!");
+  };
 
   return (
     <CartContext.Provider
-      value={{ cart, addProduct, removeProduct, clearCart }}
+      value={{ cart, addProduct, removeProduct, clearCart, descreaseAmount }}
     >
       {children}
     </CartContext.Provider>
@@ -90,7 +124,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 }
 
 export function useCart(): CartContextData {
-    const context = useContext(CartContext);
+  const context = useContext(CartContext);
 
-    return context;
-  }
+  return context;
+}

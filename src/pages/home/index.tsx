@@ -8,7 +8,12 @@ import {
   getDocs,
   deleteDoc,
 } from "firebase/firestore";
-import { AddCartButton, Container, FavoriteButton, ProductList } from "./styles";
+import {
+  AddCartButton,
+  Container,
+  FavoriteButton,
+  ProductList,
+} from "./styles";
 import Header from "../../components/Header";
 import { FaHeart } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -102,14 +107,14 @@ const Home = (): JSX.Element => {
                 />
               </FavoriteButton>
 
-                <AddCartButton
-                  onClick={(event) => {
-                    event.preventDefault()
-                    addProduct(product.id)
-                  }}
-                >
-                  Adicionar ao Carrinho
-                </AddCartButton>
+              <AddCartButton
+                onClick={(event) => {
+                  event.preventDefault();
+                  addProduct(product.id);
+                }}
+              >
+                Adicionar ao Carrinho
+              </AddCartButton>
             </a>
           ))}
         </ProductList>
