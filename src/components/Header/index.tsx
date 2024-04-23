@@ -15,8 +15,10 @@ import { toast } from "react-toastify";
 import { TiShoppingCart } from "react-icons/ti";
 import { useCart } from "../../context/cartContext";
 import ShoppingCartModal from "../ShoppingCartModal";
+import UserModal from "../UserModal";
 
 const Header = (): JSX.Element => {
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isShoppingModalOpen, setIsShoppingModalOpen] = useState(false);
 
   const { cart } = useCart();
@@ -69,6 +71,14 @@ const Header = (): JSX.Element => {
                 {dropdownOpen && (
                   <DropdownMenu>
                     <ul>
+                      <li
+                        onClick={() => {
+                          setIsUserModalOpen(true);
+                          setDropdownOpen(false);
+                        }}
+                      >
+                        <span>Meus Dados</span>
+                      </li>
                       <li>
                         <Link to="/favorites">Favoritos</Link>
                       </li>
@@ -90,6 +100,10 @@ const Header = (): JSX.Element => {
         </div>
 
         {isShoppingModalOpen && <ShoppingCartModal />}
+
+        {isUserModalOpen && (
+          <UserModal closeModal={() => setIsUserModalOpen(false)} />
+        )}
       </HeaderContainer>
     </>
   );
